@@ -2,7 +2,7 @@
 
 Changes:
 
-- Fix issue with bookmarks not being loaded when vim open with empty file
+- Fix issue with bookmarks not being loaded when vim open with empty file (merged upstream)
 
 Changes are licensed under the same terms as the original
 
