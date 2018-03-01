@@ -215,6 +215,7 @@ function! BookmarkSave(target_file, silent)
   elseif (g:bookmark_save_per_working_dir || g:bookmark_manage_per_buffer)
     call delete(a:target_file) " remove file, if no bookmarks
   endif
+  call s:refresh_line_numbers()
 endfunction
 command! -nargs=1 SaveBookmarks call CallDeprecatedCommand('BookmarkSave', [<f-args>, 0])
 command! -nargs=1 BookmarkSave call BookmarkSave(<f-args>, 0)
@@ -247,6 +248,7 @@ function! BookmarkLoad(target_file, startup, silent)
       return 0
     endtry
   endif
+  call s:refresh_line_numbers()
 endfunction
 command! -nargs=1 LoadBookmarks call CallDeprecatedCommand('BookmarkLoad', [<f-args>, 0, 0])
 command! -nargs=1 BookmarkLoad call BookmarkLoad(<f-args>, 0, 0)
