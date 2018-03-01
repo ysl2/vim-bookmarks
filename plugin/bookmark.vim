@@ -73,10 +73,13 @@ function! BookmarkToggle()
     call s:bookmark_add(file, current_line)
     echo "Bookmark added"
   endif
+  call BookmarkSave(s:bookmark_save_file(g:bm_current_file), 1)
 endfunction
 command! ToggleBookmark call CallDeprecatedCommand('BookmarkToggle', [])
 command! BookmarkToggle call BookmarkToggle()
 function! BookmarkAnnotate(...)
+  call BookmarkLoad(s:bookmark_save_file(g:bm_current_file), 1, 1)
+
   call s:refresh_line_numbers()
   let file = expand("%:p")
   if file ==# ""
@@ -116,6 +119,8 @@ function! BookmarkAnnotate(...)
     call s:bookmark_add(file, current_line, new_annotation)
     echo "Bookmark added with annotation: ". new_annotation
   endif
+
+    call BookmarkSave(s:bookmark_save_file(g:bm_current_file), 1)
 endfunction
 command! -nargs=* Annotate call CallDeprecatedCommand('BookmarkAnnotate', [<q-args>, 0])
 command! -nargs=* BookmarkAnnotate call BookmarkAnnotate(<q-args>, 0)
@@ -169,6 +174,7 @@ command! BookmarkPrev call BookmarkPrev()
 command! CtrlPBookmark call ctrlp#init(ctrlp#bookmarks#id()) 
 
 function! BookmarkShowAll()
+  call BookmarkLoad(s:bookmark_save_file(g:bm_current_file), 1, 1)
   if s:is_quickfix_win()
     q
   else
