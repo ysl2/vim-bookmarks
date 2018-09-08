@@ -4,6 +4,7 @@ Changes:
 
 - Fix issue with bookmarks not being loaded when vim open with empty file (merged upstream)
 - Drop bookmarks for files that no longer exist
+- Add BookmarkShow command
 
 Changes are licensed under the same terms as the original
 
@@ -65,6 +66,7 @@ After installation you can directly start using it. You can do this by either us
 | Add/edit/remove annotation at current line      | `mi`        | `:BookmarkAnnotate <TEXT>`   |
 | Jump to next bookmark in buffer                 | `mn`        | `:BookmarkNext`              |
 | Jump to previous bookmark in buffer             | `mp`        | `:BookmarkPrev`              |
+| Show bookmarks in current buffer only (toggle)  | `mf`        | `:BookmarkShow`              |
 | Show all bookmarks (toggle)                     | `ma`        | `:BookmarkShowAll`           |
 | Clear bookmarks in current buffer only          | `mc`        | `:BookmarkClear`             |
 | Clear bookmarks in all buffers                  | `mx`        | `:BookmarkClearAll`          |
@@ -84,6 +86,7 @@ You can overwrite any of the default mappings. Just put the following into your 
 ```viml
 nmap <Leader><Leader> <Plug>BookmarkToggle
 nmap <Leader>i <Plug>BookmarkAnnotate
+nmap <Leader>f <Plug>BookmarkShow
 nmap <Leader>a <Plug>BookmarkShowAll
 nmap <Leader>j <Plug>BookmarkNext
 nmap <Leader>k <Plug>BookmarkPrev
@@ -265,6 +268,7 @@ function! BookmarkMapKeys()
     nmap mi :BookmarkAnnotate<CR>
     nmap mn :BookmarkNext<CR>
     nmap mp :BookmarkPrev<CR>
+    nmap mf :BookmarkShow<CR>
     nmap ma :BookmarkShowAll<CR>
     nmap mc :BookmarkClear<CR>
     nmap mx :BookmarkClearAll<CR>
@@ -276,6 +280,7 @@ function! BookmarkUnmapKeys()
     unmap mi
     unmap mn
     unmap mp
+    unmap mf
     unmap ma
     unmap mc
     unmap mx

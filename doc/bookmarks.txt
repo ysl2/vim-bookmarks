@@ -73,6 +73,9 @@ Commands for using Bookmarks
   :BookmarkPrev                                                 *:BookmarkPrev*
       Jump to the next bookmark upwards
 
+  :BookmarkShow                                              *:BookmarkShow*
+      Show bookmarks for current buffer in new window (toggle)
+
   :BookmarkShowAll                                           *:BookmarkShowAll*
       Show bookmarks across all buffers in new window (toggle)
 
@@ -163,6 +166,7 @@ To change the default keys:
 >
   nmap <Leader><Leader> <Plug>BookmarkToggle
   nmap <Leader>i <Plug>BookmarkAnnotate
+  nmap <Leader>f <Plug>BookmarkShow
   nmap <Leader>a <Plug>BookmarkShowAll
   nmap <Leader>j <Plug>BookmarkNext
   nmap <Leader>k <Plug>BookmarkPrev

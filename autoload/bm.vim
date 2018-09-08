@@ -145,6 +145,21 @@ function! bm#location_list()
   return locations
 endfunction
 
+function! bm#location_list_for_file(file)
+  let locations = []
+  let line_nrs = sort(bm#all_lines(a:file), "bm#compare_lines")
+  for line_nr in line_nrs
+    let bookmark = bm#get_bookmark_by_line(a:file, line_nr)
+    let content = bookmark['annotation'] !=# ''
+          \ ? "Annotation: ". bookmark['annotation']
+          \ : (bookmark['content'] !=# ""
+          \   ? bookmark['content']
+          \   : "empty line")
+    call add(locations, a:file .":". line_nr .":". content)
+  endfor
+  return locations
+endfunction
+
 function! bm#all_files()
   return keys(g:line_map)
 endfunction

@@ -196,6 +196,35 @@ endfunction
 command! ShowAllBookmarks call CallDeprecatedCommand('BookmarkShowAll')
 command! BookmarkShowAll call BookmarkShowAll()
 
+function! BookmarkShow()
+  if s:is_quickfix_win()
+    q
+  else
+    call s:refresh_line_numbers()
+    if exists(':Unite')
+      " Needs to be fixed
+      exec ":Unite vim_bookmarks"
+    else
+      let file = expand("%:p")
+      let oldformat = &errorformat    " backup original format
+      let &errorformat = "%f:%l:%m"   " custom format for bookmarks
+      if g:bookmark_location_list
+        lgetexpr bm#location_list_for_file(file)
+        belowright lopen
+      else
+        cgetexpr bm#location_list_for_file(file)
+        belowright copen
+      endif
+      augroup BM_AutoCloseCommand
+        autocmd!
+        autocmd WinLeave * call s:auto_close()
+      augroup END
+      let &errorformat = oldformat    " re-apply original format
+    endif
+  endif
+endfunction
+command! BookmarkShow call BookmarkShow()
+
 function! BookmarkSave(target_file, silent)
   call s:refresh_line_numbers()
   if (bm#total_count() > 0 || (!g:bookmark_save_per_working_dir && !g:bookmark_manage_per_buffer))
@@ -449,6 +478,7 @@ function! s:register_mapping(command, shortcut)
 endfunction
 
 if !get(g:, 'bookmark_no_default_key_mappings', 0)
+  call s:register_mapping('BookmarkShow',     'mf')
   call s:register_mapping('BookmarkShowAll',  'ma')
   call s:register_mapping('BookmarkToggle',   'mm')
   call s:register_mapping('BookmarkAnnotate', 'mi')
@@ -456,7 +486,7 @@ if !get(g:, 'bookmark_no_default_key_mappings', 0)
   call s:register_mapping('BookmarkPrev',     'mp')
   call s:register_mapping('BookmarkClear',    'mc')
   call s:register_mapping('BookmarkClearAll', 'mx')
-  call s:register_mapping('BookmarkMoveUp', 'mkk')
+  call s:register_mapping('BookmarkMoveUp',   'mkk')
   call s:register_mapping('BookmarkMoveDown', 'mjj')
 endif
 
