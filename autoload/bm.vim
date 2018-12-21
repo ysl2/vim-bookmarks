@@ -160,8 +160,34 @@ function! bm#location_list_for_file(file)
   return locations
 endfunction
 
+function! bm#location_list_for_dir(dir)
+  let files = sort(bm#all_files())
+  let locations = []
+  let prefix = fnamemodify(a:dir, ":p")
+  for file in files
+    if stridx(file, prefix) == 0
+      let line_nrs = sort(bm#all_lines(file), "bm#compare_lines")
+      for line_nr in line_nrs
+        let bookmark = bm#get_bookmark_by_line(file, line_nr)
+        let content = bookmark['annotation'] !=# ''
+              \ ? "Annotation: ". bookmark['annotation']
+              \ : (bookmark['content'] !=# ""
+              \   ? bookmark['content']
+              \   : "empty line")
+        call add(locations, file .":". line_nr .":". content)
+      endfor
+    endif
+  endfor
+  return locations
+endfunction
+
 function! bm#all_files()
   return keys(g:line_map)
+endfunction
+
+function! bm#all_files_under_dir(dir)
+    let prefix = fnamemodify(a:dir, ";p")
+    return filter(keys(g:line_map), "stridx(v:val, l:prefix) == 0")
 endfunction
 
 function! bm#del_all()

@@ -4,7 +4,7 @@ Changes:
 
 - Fix issue with bookmarks not being loaded when vim open with empty file (merged upstream)
 - Drop bookmarks for files that no longer exist
-- Add BookmarkShow command
+- Add BookmarkShow, BookmarkShowCwd and BookmarkClearCwd commands
 
 Changes are licensed under the same terms as the original
 
@@ -67,8 +67,10 @@ After installation you can directly start using it. You can do this by either us
 | Jump to next bookmark in buffer                 | `mn`        | `:BookmarkNext`              |
 | Jump to previous bookmark in buffer             | `mp`        | `:BookmarkPrev`              |
 | Show bookmarks in current buffer only (toggle)  | `mf`        | `:BookmarkShow`              |
+| Show bookmarks in files under CWD only (toggle) | `md`        | `:BookmarkShowCwd`           |
 | Show all bookmarks (toggle)                     | `ma`        | `:BookmarkShowAll`           |
 | Clear bookmarks in current buffer only          | `mc`        | `:BookmarkClear`             |
+| Clear bookmarks in files under CWD only         | `mw`        | `:BookmarkClearCwd`          |
 | Clear bookmarks in all buffers                  | `mx`        | `:BookmarkClearAll`          |
 | Move up bookmark at current line                | `mkk`       | `:BookmarkMoveUp`            |
 | Move down bookmark at current line              | `mjj`       | `:BookmarkMoveDown`          |
@@ -87,10 +89,12 @@ You can overwrite any of the default mappings. Just put the following into your 
 nmap <Leader><Leader> <Plug>BookmarkToggle
 nmap <Leader>i <Plug>BookmarkAnnotate
 nmap <Leader>f <Plug>BookmarkShow
+nmap <Leader>d <Plug>BookmarkShowCwd
 nmap <Leader>a <Plug>BookmarkShowAll
 nmap <Leader>j <Plug>BookmarkNext
 nmap <Leader>k <Plug>BookmarkPrev
 nmap <Leader>c <Plug>BookmarkClear
+nmap <Leader>w <Plug>BookmarkClearCwd
 nmap <Leader>x <Plug>BookmarkClearAll
 nmap <Leader>kk <Plug>BookmarkMoveUp
 nmap <Leader>jj <Plug>BookmarkMoveDown
@@ -207,7 +211,7 @@ endfunction
 
 ### Silent saving and loading
 
-Call functions BookmarkSave, BookmarkLoad and BookmarkClearAll with the last argument set to 0 to perform these operations silently. You may use this to manage your bookmark list transparently from within your custom script.
+Call functions BookmarkSave, BookmarkLoad, BookmarkClearCwd and BookmarkClearAll with the last argument set to 0 to perform these operations silently. You may use this to manage your bookmark list transparently from within your custom script.
 
 ## Unite Integration
 ![A screenshot of vim-bookmarks' Unite interface](./screenshot-unite-interface.png)
@@ -269,8 +273,10 @@ function! BookmarkMapKeys()
     nmap mn :BookmarkNext<CR>
     nmap mp :BookmarkPrev<CR>
     nmap mf :BookmarkShow<CR>
+    nmap md :BookmarkShowCwd<CR>
     nmap ma :BookmarkShowAll<CR>
     nmap mc :BookmarkClear<CR>
+    nmap mw :BookmarkClearCwd<CR>
     nmap mx :BookmarkClearAll<CR>
     nmap mkk :BookmarkMoveUp
     nmap mjj :BookmarkMoveDown
