@@ -57,6 +57,7 @@ endfunction
 " Commands {{{
 
 function! BookmarkToggle()
+  call BookmarkLoad(s:bookmark_save_file(g:bm_current_file), 0, 1)
   call s:refresh_line_numbers()
   let file = expand("%:p")
   if file ==# ""
@@ -77,10 +78,12 @@ function! BookmarkToggle()
     call s:bookmark_add(file, current_line)
     echo "Bookmark added"
   endif
+  call BookmarkSave(s:bookmark_save_file(g:bm_current_file), 1)
 endfunction
 command! ToggleBookmark call CallDeprecatedCommand('BookmarkToggle', [])
 command! BookmarkToggle call BookmarkToggle()
 function! BookmarkAnnotate(...)
+  call BookmarkLoad(s:bookmark_save_file(g:bm_current_file), 0, 1)
   call s:refresh_line_numbers()
   let file = expand("%:p")
   if file ==# ""
@@ -124,11 +127,13 @@ function! BookmarkAnnotate(...)
     call s:bookmark_add(file, current_line, new_annotation)
     echo "Bookmark added with annotation: ". new_annotation
   endif
+  call BookmarkSave(s:bookmark_save_file(g:bm_current_file), 1)
 endfunction
 command! -nargs=* Annotate call CallDeprecatedCommand('BookmarkAnnotate', [<q-args>, 0])
 command! -nargs=* BookmarkAnnotate call BookmarkAnnotate(<q-args>, 0)
 
 function! BookmarkClear()
+  call BookmarkLoad(s:bookmark_save_file(g:bm_current_file), 0, 1)
   call s:refresh_line_numbers()
   let file = expand("%:p")
   let lines = bm#all_lines(file)
@@ -136,11 +141,13 @@ function! BookmarkClear()
     call s:bookmark_remove(file, line_nr)
   endfor
   echo "Bookmarks removed"
+  call BookmarkSave(s:bookmark_save_file(g:bm_current_file), 1)
 endfunction
 command! ClearBookmarks call CallDeprecatedCommand('BookmarkClear', [])
 command! BookmarkClear call BookmarkClear()
 
 function! BookmarkClearAll(silent)
+  call BookmarkLoad(s:bookmark_save_file(g:bm_current_file), 0, 1)
   call s:refresh_line_numbers()
   let files = bm#all_files()
   let file_count = len(files)
@@ -157,6 +164,7 @@ function! BookmarkClearAll(silent)
       echo "All bookmarks removed"
     endif
   endif
+  call BookmarkSave(s:bookmark_save_file(g:bm_current_file), 1)
 endfunction
 command! ClearAllBookmarks call CallDeprecatedCommand('BookmarkClearAll', [0])
 command! BookmarkClearAll call BookmarkClearAll(0)
@@ -180,6 +188,7 @@ function! BookmarkShowAll()
   if s:is_quickfix_win()
     q
   else
+    call BookmarkLoad(s:bookmark_save_file(g:bm_current_file), 0, 1)
     call s:refresh_line_numbers()
     if exists(':Unite')
       exec ":Unite vim_bookmarks"
