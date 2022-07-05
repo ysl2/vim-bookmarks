@@ -142,7 +142,7 @@ function! bm#location_list()
             \ : (bookmark['content'] !=# ""
             \   ? bookmark['content']
             \   : "empty line")
-      call add(locations, content ." :". file .":". line_nr .":")
+      call add(locations, file .":". line_nr .":". content)
     endfor
   endfor
   return locations
