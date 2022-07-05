@@ -138,11 +138,11 @@ function! bm#location_list()
     for line_nr in line_nrs
       let bookmark = bm#get_bookmark_by_line(file, line_nr)
       let content = bookmark['annotation'] !=# ''
-            \ ? "". bookmark['annotation']
+            \ ? bookmark['annotation']
             \ : (bookmark['content'] !=# ""
             \   ? bookmark['content']
             \   : "empty line")
-      call add(locations, file .":". line_nr .":". content)
+      call add(locations, content ." :". file .":". line_nr .":")
     endfor
   endfor
   return locations
