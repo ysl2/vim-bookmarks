@@ -104,13 +104,14 @@ function! BookmarkAnnotate(...)
     execute ":redraw!"
   endif
 
+  let col_nr = col('.')
   " Nothing changed, bail out
-  if old_annotation ==# new_annotation
+  if old_annotation ==# new_annotation && bm['col_nr'] == col_nr
     return
 
   " Update annotation
   elseif has_bm
-    call bm#update_annotation(file, bm['sign_idx'], new_annotation)
+    call bm#update_annotation(file, bm['sign_idx'], col_nr, new_annotation)
     let result_msg = (new_annotation ==# "")
           \ ? "removed"
           \ : old_annotation !=# ""
@@ -421,7 +422,7 @@ endfunction
 function! s:bookmark_add(file, line_nr, ...)
   let annotation = (a:0 ==# 1) ? a:1 : ""
   let sign_idx = bm_sign#add(a:file, a:line_nr, annotation !=# "")
-  call bm#add_bookmark(a:file, sign_idx, a:line_nr, getline(a:line_nr), annotation)
+  call bm#add_bookmark(a:file, sign_idx, a:line_nr, col('.'), getline(a:line_nr), annotation)
 endfunction
 
 function! s:bookmark_remove(file, line_nr)
@@ -432,12 +433,12 @@ endfunction
 
 function! s:jump_to_bookmark(type)
   let file = expand("%:p")
-  let line_nr = bm#{a:type}(file, line("."))
+  let line = bm#{a:type}(file, line("."))
+  let line_nr = line[0]
   if line_nr ==# 0
     echo "No bookmarks found"
   else
-    call cursor(line_nr, 1)
-    normal! ^
+    call cursor(line_nr, line[1])
     if g:bookmark_center ==# 1
       normal! zz
     endif
@@ -575,12 +576,12 @@ endfunction
 call s:register_mapping('BookmarkShowAll',    'ma',  0)
 call s:register_mapping('BookmarkToggle',     'mm',  0)
 call s:register_mapping('BookmarkAnnotate',   'mi',  0)
-call s:register_mapping('BookmarkNext',       'mn',  0)
-call s:register_mapping('BookmarkPrev',       'mp',  0)
+call s:register_mapping('BookmarkNext',       'mj',  0)
+call s:register_mapping('BookmarkPrev',       'mk',  0)
 call s:register_mapping('BookmarkClear',      'mc',  0)
 call s:register_mapping('BookmarkClearAll',   'mx',  0)
-call s:register_mapping('BookmarkMoveUp',     'mkk', 1)
-call s:register_mapping('BookmarkMoveDown',   'mjj', 1)
+call s:register_mapping('BookmarkMoveUp',     'mp',  1)
+call s:register_mapping('BookmarkMoveDown',   'mn',  1)
 call s:register_mapping('BookmarkMoveToLine', 'mg',  1)
 
 " }}}
