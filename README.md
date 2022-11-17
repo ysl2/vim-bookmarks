@@ -53,13 +53,13 @@ After installation you can directly start using it. You can do this by either us
 |-------------------------------------------------|-------------|------------------------------|
 | Add/remove bookmark at current line             | `mm`        | `:BookmarkToggle`            |
 | Add/edit/remove annotation at current line      | `mi`        | `:BookmarkAnnotate <TEXT>`   |
-| Jump to next bookmark in buffer                 | `mn`        | `:BookmarkNext`              |
-| Jump to previous bookmark in buffer             | `mp`        | `:BookmarkPrev`              |
+| Jump to next bookmark in buffer                 | `mj`        | `:BookmarkNext`              |
+| Jump to previous bookmark in buffer             | `mk`        | `:BookmarkPrev`              |
 | Show all bookmarks (toggle)                     | `ma`        | `:BookmarkShowAll`           |
 | Clear bookmarks in current buffer only          | `mc`        | `:BookmarkClear`             |
 | Clear bookmarks in all buffers                  | `mx`        | `:BookmarkClearAll`          |
-| Move up bookmark at current line                | `[count]mkk`| `:BookmarkMoveUp [<COUNT>]`  |
-| Move down bookmark at current line              | `[count]mjj`| `:BookmarkMoveDown [<COUNT>]`|
+| Move up bookmark at current line                | `[count]mp`| `:BookmarkMoveUp [<COUNT>]`  |
+| Move down bookmark at current line              | `[count]mn`| `:BookmarkMoveDown [<COUNT>]`|
 | Move bookmark at current line to another line   | `[count]mg` | `:BookmarkMoveToLine <LINE>` |
 | Save all bookmarks to a file                    |             | `:BookmarkSave <FILE_PATH>`  |
 | Load bookmarks from a file                      |             | `:BookmarkLoad <FILE_PATH>`  |
@@ -80,8 +80,8 @@ nmap <Leader>j <Plug>BookmarkNext
 nmap <Leader>k <Plug>BookmarkPrev
 nmap <Leader>c <Plug>BookmarkClear
 nmap <Leader>x <Plug>BookmarkClearAll
-nmap <Leader>kk <Plug>BookmarkMoveUp
-nmap <Leader>jj <Plug>BookmarkMoveDown
+nmap <Leader>p <Plug>BookmarkMoveUp
+nmap <Leader>n <Plug>BookmarkMoveDown
 nmap <Leader>g <Plug>BookmarkMoveToLine
 ```
 You can disable all default key bindings by setting the following in your `~/.vimrc`:
