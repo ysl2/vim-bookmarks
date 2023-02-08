@@ -663,15 +663,20 @@ endfunction
 " Maps {{{
 
 function! s:register_mapping(command, shortcut, has_count)
-  if a:has_count
-    execute "nnoremap <silent> <Plug>". a:command ." :<C-u>". a:command ." v:count<CR>"
+  if get(g:, 'bookmark_use_old_plug_key_names', 0)
+    let command_plug_name = a:command
   else
-    execute "nnoremap <silent> <Plug>". a:command ." :". a:command ."<CR>"
+    let command_plug_name = "(" . a:command . ")"
   endif
-  if !hasmapto("<Plug>". a:command)
+  if a:has_count
+    execute "nnoremap <silent> <Plug>". command_plug_name ." :<C-u>". a:command ." v:count<CR>"
+  else
+    execute "nnoremap <silent> <Plug>". command_plug_name ." :". a:command ."<CR>"
+  endif
+  if !hasmapto("<Plug>". command_plug_name)
         \ && !get(g:, 'bookmark_no_default_key_mappings', 0)
         \ && maparg(a:shortcut, 'n') ==# ''
-    execute "nmap ". a:shortcut ." <Plug>". a:command
+    execute "nmap ". a:shortcut ." <Plug>". command_plug_name
   endif
 endfunction
 
