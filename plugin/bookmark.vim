@@ -179,7 +179,7 @@ function! BookmarkPrev()
 endfunction
 command! PrevBookmark call CallDeprecatedCommand('BookmarkPrev')
 command! BookmarkPrev call BookmarkPrev()
-command! CtrlPBookmark call ctrlp#init(ctrlp#bookmarks#id()) 
+command! CtrlPBookmark call ctrlp#init(ctrlp#bookmarks#id())
 
 function! BookmarkShowAll()
   call BookmarkLoad(s:bookmark_save_file(g:bm_current_file), 1, 1)
