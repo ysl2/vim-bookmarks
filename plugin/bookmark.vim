@@ -31,8 +31,8 @@ call s:set('g:bookmark_auto_save_file',       $HOME .'/.vim-bookmarks')
 call s:set('g:bookmark_auto_close',           0 )
 call s:set('g:bookmark_center',               0 )
 call s:set('g:bookmark_location_list',        0 )
-call s:set('g:bookmark_disable_ctrlp',        0 )
-call s:set('g:bookmark_display_annotation',   0 )
+call s:set('g:bookmark_disable_ctrlp',        1 )
+call s:set('g:bookmark_display_annotation',   1 )
 
 function! s:init(file)
   if g:bookmark_auto_save ==# 1 || g:bookmark_manage_per_buffer ==# 1
@@ -680,7 +680,7 @@ function! s:register_mapping(command, shortcut, has_count)
   endif
 endfunction
 
-call s:register_mapping('BookmarkShowAll',    'ma',  0)
+call s:register_mapping('BookmarkShowAll',    'mA',  0)
 call s:register_mapping('BookmarkToggle',     'mm',  0)
 call s:register_mapping('BookmarkAnnotate',   'mi',  0)
 call s:register_mapping('BookmarkNext',       'mn',  0)
