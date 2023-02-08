@@ -74,11 +74,20 @@ Commands for using Bookmarks
   :BookmarkPrev                                                 *:BookmarkPrev*
       Jump to the next bookmark upwards
 
+  :BookmarkShow                                              *:BookmarkShow*
+      Show bookmarks for current buffer in new window (toggle)
+
+  :BookmarkShowCwd                                           *:BookmarkShowCwd*
+      Show bookmarks for files under CWD in new window (toggle)
+
   :BookmarkShowAll                                           *:BookmarkShowAll*
       Show bookmarks across all buffers in new window (toggle)
 
   :BookmarkClear                                               *:BookmarkClear*
       Removes bookmarks for current buffer
+
+  :BookmarkClearCwd                                         *:BookmarkClearCwd*
+      Removes bookmarks for files under CWD
 
   :BookmarkClearAll                                         *:BookmarkClearAll*
       Removes bookmarks for all buffer
@@ -169,10 +178,13 @@ To change the default keys:
 >
   nmap <Leader><Leader> <Plug>BookmarkToggle
   nmap <Leader>i <Plug>BookmarkAnnotate
+  nmap <Leader>f <Plug>BookmarkShow
+  nmap <Leader>d <Plug>BookmarkShowCwd
   nmap <Leader>a <Plug>BookmarkShowAll
   nmap <Leader>j <Plug>BookmarkNext
   nmap <Leader>k <Plug>BookmarkPrev
   nmap <Leader>c <Plug>BookmarkClear
+  nmap <Leader>w <Plug>BookmarkClearCwd
   nmap <Leader>x <Plug>BookmarkClearAll
 
   " these will also work with a [count] prefix

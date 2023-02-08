@@ -169,6 +169,31 @@ endfunction
 command! ClearAllBookmarks call CallDeprecatedCommand('BookmarkClearAll', [0])
 command! BookmarkClearAll call BookmarkClearAll(0)
 
+function! BookmarkClearCwd(silent)
+  call s:refresh_line_numbers()
+  let dir = getcwd()
+  let files = bm#all_files_under_dir(dir)
+  let file_count = len(files)
+  if file_count ==# 0
+    return
+  endif
+  let delete = 1
+  let in_multiple_files = file_count ># 1
+  let mark_count = len(bm#location_list_for_dir(dir))
+  let supports_confirm = has("dialog_con") || has("dialog_gui")
+  if (in_multiple_files && g:bookmark_show_warning ==# 1 && supports_confirm && !a:silent)
+    let delete = confirm("Delete ". mark_count ." bookmarks in ". file_count . " buffers?", "&Yes\n&No")
+  endif
+  if (delete ==# 1)
+    call s:remove_bookmarks_in_files(files)
+    if (!a:silent)
+      execute ":redraw!"
+      echo "Bookmarks removed"
+    endif
+  endif
+endfunction
+command! BookmarkClearCwd call BookmarkClearCwd(0)
+
 function! BookmarkNext()
   call s:refresh_line_numbers()
   call s:jump_to_bookmark('next')
@@ -214,6 +239,64 @@ function! BookmarkShowAll()
 endfunction
 command! ShowAllBookmarks call CallDeprecatedCommand('BookmarkShowAll')
 command! BookmarkShowAll call BookmarkShowAll()
+
+function! BookmarkShow()
+  if s:is_quickfix_win()
+    q
+  else
+    call s:refresh_line_numbers()
+    if exists(':Unite')
+      " Needs to be fixed
+      exec ":Unite vim_bookmarks"
+    else
+      let file = expand("%:p")
+      let oldformat = &errorformat    " backup original format
+      let &errorformat = "%f:%l:%m"   " custom format for bookmarks
+      if g:bookmark_location_list
+        lgetexpr bm#location_list_for_file(file)
+        belowright lopen
+      else
+        cgetexpr bm#location_list_for_file(file)
+        belowright copen
+      endif
+      augroup BM_AutoCloseCommand
+        autocmd!
+        autocmd WinLeave * call s:auto_close()
+      augroup END
+      let &errorformat = oldformat    " re-apply original format
+    endif
+  endif
+endfunction
+command! BookmarkShow call BookmarkShow()
+
+function! BookmarkShowCwd()
+  if s:is_quickfix_win()
+    q
+  else
+    call s:refresh_line_numbers()
+    if exists(':Unite')
+      " Needs to be fixed
+      exec ":Unite vim_bookmarks"
+    else
+      let dir = getcwd()
+      let oldformat = &errorformat    " backup original format
+      let &errorformat = "%f:%l:%m"   " custom format for bookmarks
+      if g:bookmark_location_list
+        lgetexpr bm#location_list_for_dir(dir)
+        belowright lopen
+      else
+        cgetexpr bm#location_list_for_dir(dir)
+        belowright copen
+      endif
+      augroup BM_AutoCloseCommand
+        autocmd!
+        autocmd WinLeave * call s:auto_close()
+      augroup END
+      let &errorformat = oldformat    " re-apply original format
+    endif
+  endif
+endfunction
+command! BookmarkShowCwd call BookmarkShowCwd()
 
 function! BookmarkSave(target_file, silent)
   call s:refresh_line_numbers()
@@ -469,6 +552,15 @@ function! s:remove_all_bookmarks()
   endfor
 endfunction
 
+function! s:remove_bookmarks_in_files(files)
+  for file in a:files
+    let lines = bm#all_lines(file)
+    for line_nr in lines
+      call s:bookmark_remove(file, line_nr)
+    endfor
+  endfor
+endfunction
+
 function! s:startup_load_bookmarks(file)
   call BookmarkLoad(s:bookmark_save_file(a:file), 1, 1)
   call s:add_missing_signs(a:file)
@@ -593,6 +685,9 @@ call s:register_mapping('BookmarkClearAll',   'mx',  0)
 call s:register_mapping('BookmarkMoveUp',     'mkk', 1)
 call s:register_mapping('BookmarkMoveDown',   'mjj', 1)
 call s:register_mapping('BookmarkMoveToLine', 'mg',  1)
+call s:register_mapping('BookmarkShow',     'mf')
+call s:register_mapping('BookmarkShowCwd',  'md')
+call s:register_mapping('BookmarkClearCwd', 'mw')
 
 " }}}
 
