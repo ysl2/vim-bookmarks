@@ -581,7 +581,7 @@ function! s:register_mapping(command, shortcut, has_count)
   endif
 endfunction
 
-call s:register_mapping('BookmarkShowAll',    'ma',  0)
+call s:register_mapping('BookmarkShowAll',    'mA',  0)
 call s:register_mapping('BookmarkToggle',     'mm',  0)
 call s:register_mapping('BookmarkAnnotate',   'mi',  0)
 call s:register_mapping('BookmarkNext',       'mn',  0)
