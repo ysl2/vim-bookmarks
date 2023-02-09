@@ -31,8 +31,8 @@ call s:set('g:bookmark_auto_save_file',       $HOME .'/.vim-bookmarks')
 call s:set('g:bookmark_auto_close',           0 )
 call s:set('g:bookmark_center',               0 )
 call s:set('g:bookmark_location_list',        0 )
-call s:set('g:bookmark_disable_ctrlp',        0 )
-call s:set('g:bookmark_display_annotation',   0 )
+call s:set('g:bookmark_disable_ctrlp',        1 )
+call s:set('g:bookmark_display_annotation',   1 )
 
 function! s:init(file)
   if g:bookmark_auto_save ==# 1 || g:bookmark_manage_per_buffer ==# 1
@@ -64,13 +64,6 @@ function! BookmarkToggle()
   endif
   let current_line = line('.')
   if bm#has_bookmark_at_line(file, current_line)
-    if g:bookmark_show_toggle_warning ==# 1 && bm#is_bookmark_has_annotation_by_line(file, current_line)
-      let delete = confirm("Delete Annotated bookmarks?", "&Yes\n&No", 2)
-      if (delete !=# 1)
-        echo "Ignore!"
-        return
-      endif
-    endif
     call s:bookmark_remove(file, current_line)
     echo "Bookmark removed"
   else
@@ -174,7 +167,7 @@ function! BookmarkPrev()
 endfunction
 command! PrevBookmark call CallDeprecatedCommand('BookmarkPrev')
 command! BookmarkPrev call BookmarkPrev()
-command! CtrlPBookmark call ctrlp#init(ctrlp#bookmarks#id()) 
+command! CtrlPBookmark call ctrlp#init(ctrlp#bookmarks#id())
 
 function! BookmarkShowAll()
   if s:is_quickfix_win()
@@ -560,15 +553,20 @@ endfunction
 " Maps {{{
 
 function! s:register_mapping(command, shortcut, has_count)
-  if a:has_count
-    execute "nnoremap <silent> <Plug>". a:command ." :<C-u>". a:command ." v:count<CR>"
+  if get(g:, 'bookmark_use_old_plug_key_names', 0)
+    let command_plug_name = a:command
   else
-    execute "nnoremap <silent> <Plug>". a:command ." :". a:command ."<CR>"
+    let command_plug_name = "(" . a:command . ")"
   endif
-  if !hasmapto("<Plug>". a:command)
+  if a:has_count
+    execute "nnoremap <silent> <Plug>". command_plug_name ." :<C-u>". a:command ." v:count<CR>"
+  else
+    execute "nnoremap <silent> <Plug>". command_plug_name ." :". a:command ."<CR>"
+  endif
+  if !hasmapto("<Plug>". command_plug_name)
         \ && !get(g:, 'bookmark_no_default_key_mappings', 0)
         \ && maparg(a:shortcut, 'n') ==# ''
-    execute "nmap ". a:shortcut ." <Plug>". a:command
+    execute "nmap ". a:shortcut ." <Plug>". command_plug_name
   endif
 endfunction
 

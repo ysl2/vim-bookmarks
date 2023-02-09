@@ -184,6 +184,10 @@ function! bm#deserialize(data)
     let ses = l:bm_sessions["default"]
     let result = []
     for file in keys(ses)
+      if !filereadable(file)
+        " File no longer exists, forget bookmarks
+        continue
+      endif
       for bm in ses[file]
         let annotation = has_key(bm, 'annotation') ? bm['annotation'] : ''
          call add(result,
