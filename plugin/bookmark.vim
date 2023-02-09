@@ -31,8 +31,8 @@ call s:set('g:bookmark_auto_save_file',       $HOME .'/.vim-bookmarks')
 call s:set('g:bookmark_auto_close',           0 )
 call s:set('g:bookmark_center',               0 )
 call s:set('g:bookmark_location_list',        0 )
-call s:set('g:bookmark_disable_ctrlp',        0 )
-call s:set('g:bookmark_display_annotation',   0 )
+call s:set('g:bookmark_disable_ctrlp',        1 )
+call s:set('g:bookmark_display_annotation',   1 )
 
 function! s:init(file)
   if g:bookmark_auto_save ==# 1 || g:bookmark_manage_per_buffer ==# 1
@@ -64,13 +64,6 @@ function! BookmarkToggle()
   endif
   let current_line = line('.')
   if bm#has_bookmark_at_line(file, current_line)
-    if g:bookmark_show_toggle_warning ==# 1 && bm#is_bookmark_has_annotation_by_line(file, current_line)
-      let delete = confirm("Delete Annotated bookmarks?", "&Yes\n&No", 2)
-      if (delete !=# 1)
-        echo "Ignore!"
-        return
-      endif
-    endif
     call s:bookmark_remove(file, current_line)
     echo "Bookmark removed"
   else
