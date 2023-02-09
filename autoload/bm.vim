@@ -19,7 +19,6 @@ function! bm#has_bookmark_at_line(file, line_nr)
   return has_key(g:line_map[a:file], a:line_nr)
 endfunction
 
-" HACK: bug here.
 function! bm#get_bookmark_by_line(file, line_nr)
   return g:line_map[a:file][a:line_nr]
 endfunction
