@@ -582,16 +582,16 @@ function! s:register_mapping(command, shortcut, has_count)
   endif
 endfunction
 
-call s:register_mapping('BookmarkShowAll',    'mA',  0)
-call s:register_mapping('BookmarkToggle',     'mm',  0)
-call s:register_mapping('BookmarkAnnotate',   'mi',  0)
-call s:register_mapping('BookmarkNext',       'mn',  0)
-call s:register_mapping('BookmarkPrev',       'mp',  0)
-call s:register_mapping('BookmarkClear',      'mc',  0)
-call s:register_mapping('BookmarkClearAll',   'mx',  0)
-call s:register_mapping('BookmarkMoveUp',     'mkk', 1)
-call s:register_mapping('BookmarkMoveDown',   'mjj', 1)
-call s:register_mapping('BookmarkMoveToLine', 'mg',  1)
+" call s:register_mapping('BookmarkShowAll',    'mA',  0)
+" call s:register_mapping('BookmarkToggle',     'mm',  0)
+" call s:register_mapping('BookmarkAnnotate',   'mi',  0)
+" call s:register_mapping('BookmarkNext',       'mn',  0)
+" call s:register_mapping('BookmarkPrev',       'mp',  0)
+" call s:register_mapping('BookmarkClear',      'mc',  0)
+" call s:register_mapping('BookmarkClearAll',   'mx',  0)
+" call s:register_mapping('BookmarkMoveUp',     'mkk', 1)
+" call s:register_mapping('BookmarkMoveDown',   'mjj', 1)
+" call s:register_mapping('BookmarkMoveToLine', 'mg',  1)
 
 " }}}
 
