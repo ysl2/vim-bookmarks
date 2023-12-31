@@ -32,7 +32,7 @@ call s:set('g:bookmark_auto_close',           0 )
 call s:set('g:bookmark_center',               0 )
 call s:set('g:bookmark_location_list',        0 )
 call s:set('g:bookmark_disable_ctrlp',        1 )
-call s:set('g:bookmark_display_annotation',   1 )
+call s:set('g:bookmark_display_annotation',   0 )
 
 function! s:init(file)
   if g:bookmark_auto_save ==# 1 || g:bookmark_manage_per_buffer ==# 1
@@ -66,10 +66,10 @@ function! BookmarkToggle()
   let current_line = line('.')
   if bm#has_bookmark_at_line(file, current_line)
     call s:bookmark_remove(file, current_line)
-    echo "Bookmark removed"
+    " echo "Bookmark removed"
   else
     call s:bookmark_add(file, current_line)
-    echo "Bookmark added"
+    " echo "Bookmark added"
   endif
   call BookmarkSave(s:bookmark_save_file(g:bm_current_file), 1)
 endfunction
@@ -119,7 +119,7 @@ function! BookmarkAnnotate(...)
   " Create bookmark with annotation
   elseif new_annotation !=# ""
     call s:bookmark_add(file, current_line, new_annotation)
-    echo "Bookmark added with annotation: ". new_annotation
+    " echo "Bookmark added with annotation: ". new_annotation
   endif
   call BookmarkSave(s:bookmark_save_file(g:bm_current_file), 1)
 endfunction
@@ -134,7 +134,7 @@ function! BookmarkClear()
   for line_nr in lines
     call s:bookmark_remove(file, line_nr)
   endfor
-  echo "Bookmarks removed"
+  " echo "Bookmarks removed"
   call BookmarkSave(s:bookmark_save_file(g:bm_current_file), 1)
 endfunction
 command! ClearBookmarks call CallDeprecatedCommand('BookmarkClear', [])
@@ -155,7 +155,7 @@ function! BookmarkClearAll(silent)
     call s:remove_all_bookmarks()
     if (!a:silent)
       execute ":redraw!"
-      echo "All bookmarks removed"
+      " echo "All bookmarks removed"
     endif
   endif
   call BookmarkSave(s:bookmark_save_file(g:bm_current_file), 1)
@@ -449,7 +449,7 @@ function! s:jump_to_bookmark(type)
     let bm = bm#get_bookmark_by_line(file, line_nr)
     let annotation = bm['annotation'] !=# "" ? " (". bm['annotation'] . ")" : ""
     execute ":redraw!"
-    echo "Jumped to bookmark". annotation
+    " echo "Jumped to bookmark". annotation
   endif
 endfunction
 
