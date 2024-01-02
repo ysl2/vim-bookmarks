@@ -536,7 +536,7 @@ function! s:set_up_auto_save(file)
     let g:bm_current_file = a:file
     augroup bm_auto_save
       autocmd!
-      autocmd BufWinEnter * call s:add_missing_signs(expand('<afile>:p'))
+      autocmd BufWinEnter,TextChanged * call s:add_missing_signs(expand('<afile>:p'))
       autocmd BufLeave,VimLeave,BufReadPre * call s:auto_save()
     augroup END
   endif
